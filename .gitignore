@@ -1,0 +1,6 @@
+# Directories
+.settings/
+Debug/
+
+# Files
+.mxproject
