@@ -1,5 +1,5 @@
 /*
- * signal_generators.c
+ * signal_generator.c
  */
 
 #include "signal_generator.h"
