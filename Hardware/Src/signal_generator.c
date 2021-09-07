@@ -46,7 +46,6 @@ void signal_generator_init(signal_generator_t* dev, SPI_HandleTypeDef* hspi, GPI
 	dev->htim = htim;
 	dev->tim_channel = tim_channel;
 	dev->ref_clk_freq_mhz = ref_clk_freq_mhz;
-	dev->is_init = false;
 
 	// Set register 0
 	R0* reg0 = &dev->regs[0].reg0;
@@ -133,7 +132,7 @@ void signal_generator_init(signal_generator_t* dev, SPI_HandleTypeDef* hspi, GPI
 void signal_generator_set_output_freq(signal_generator_t* dev, double freq_mhz) {
 
 	// Check user inputs
-	if (!dev->is_init || freq_mhz < 137.5 || freq_mhz > 4400) {
+	if (!dev || freq_mhz < 137.5 || freq_mhz > 4400) {
 		return;
 	}
 
@@ -157,15 +156,17 @@ void signal_generator_set_output_freq(signal_generator_t* dev, double freq_mhz) 
 }
 
 void signal_generator_start(const signal_generator_t* dev) {
-	if (!dev->is_init)
+	if (!dev) {
 		return;
+	}
 
 	HAL_GPIO_WritePin(dev->on_port, dev->on_pin, GPIO_PIN_SET);
 }
 
 void signal_generator_stop(const signal_generator_t* dev) {
-	if (!dev->is_init)
+	if (!dev) {
 		return;
+	}
 
 	HAL_GPIO_WritePin(dev->on_port, dev->on_pin, GPIO_PIN_RESET);
 }

@@ -95,7 +95,6 @@ typedef struct signal_generator_t {
 	GPIO_TypeDef* on_port;
 	uint16_t on_pin;
 	double ref_clk_freq_mhz;
-	bool is_init;
 	register_t regs[6];
 	double freq_pfd_mhz;
 } signal_generator_t;
