@@ -114,6 +114,10 @@ void Error_Handler(void);
 #define SIG_GEN_DATA_GPIO_Port GPIOC
 #define SIG_GEN_LE_Pin GPIO_PIN_2
 #define SIG_GEN_LE_GPIO_Port GPIOD
+#define GPS_TXO_Pin GPIO_PIN_5
+#define GPS_TXO_GPIO_Port GPIOD
+#define GPS_RXI_Pin GPIO_PIN_6
+#define GPS_RXI_GPIO_Port GPIOD
 #define RMII_TX_EN_Pin GPIO_PIN_11
 #define RMII_TX_EN_GPIO_Port GPIOG
 #define RMII_TXD0_Pin GPIO_PIN_13
