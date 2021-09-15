@@ -60,6 +60,10 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define USER_Btn_Pin GPIO_PIN_13
 #define USER_Btn_GPIO_Port GPIOC
+#define IMU_SDA_Pin GPIO_PIN_0
+#define IMU_SDA_GPIO_Port GPIOF
+#define IMU_SCL_Pin GPIO_PIN_1
+#define IMU_SCL_GPIO_Port GPIOF
 #define SIG_GEN_REF_CLK_Pin GPIO_PIN_6
 #define SIG_GEN_REF_CLK_GPIO_Port GPIOF
 #define MCO_Pin GPIO_PIN_0

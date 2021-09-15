@@ -23,6 +23,7 @@
 #include "adc.h"
 #include "dma.h"
 #include "eth.h"
+#include "i2c.h"
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"
@@ -103,6 +104,7 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM4_Init();
   MX_TIM10_Init();
+  MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -169,9 +171,10 @@ void SystemClock_Config(void)
     Error_Handler();
   }
   PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_USART2|RCC_PERIPHCLK_USART3
-                              |RCC_PERIPHCLK_CLK48;
+                              |RCC_PERIPHCLK_I2C2|RCC_PERIPHCLK_CLK48;
   PeriphClkInitStruct.Usart2ClockSelection = RCC_USART2CLKSOURCE_PCLK1;
   PeriphClkInitStruct.Usart3ClockSelection = RCC_USART3CLKSOURCE_PCLK1;
+  PeriphClkInitStruct.I2c2ClockSelection = RCC_I2C2CLKSOURCE_PCLK1;
   PeriphClkInitStruct.Clk48ClockSelection = RCC_CLK48SOURCE_PLL;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
   {
