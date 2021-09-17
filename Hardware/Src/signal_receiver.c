@@ -35,15 +35,22 @@ void signal_receiver_start(signal_receiver_t* dev, uint32_t num_samples) {
 		return;
 	}
 
+	dev->num_samples = num_samples;
+
 	HAL_ADC_RegisterCallback(dev->hadc, HAL_ADC_CONVERSION_COMPLETE_CB_ID, signal_receiver_complete);
 	HAL_ADC_Start_DMA(dev->hadc, dev->adc_dma_stream, num_samples);
 }
 
-bool signal_receiver_is_complete(signal_receiver_t* dev) {
+uint32_t* signal_receiver_get_data(signal_receiver_t* dev, uint32_t* num_samples) {
 	// Check user inputs
 	if (!dev) {
-		return true;
+		return NULL;
+	}
+	// If callback exists, it hasn't been called yet
+	if (dev->hadc->ConvCpltCallback) {
+		return NULL;
 	}
 
-	return (!dev->hadc->ConvCpltCallback); // If NULL, sampling is complete
+	*num_samples = dev->num_samples;
+	return dev->adc_dma_stream;
 }
