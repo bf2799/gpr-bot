@@ -9,10 +9,14 @@
 
 #include "stm32f7xx_hal.h"
 
-typedef struct encoder_t {
-	TIM_HandleTypeDef* htim;
+typedef struct encoder_data_t {
 	int32_t tick_65536s;
 	uint32_t tick_1s;
+} encoder_data_t;
+
+typedef struct encoder_t {
+	TIM_HandleTypeDef* htim;
+	encoder_data_t data;
 } encoder_t;
 
 /**
@@ -37,12 +41,11 @@ void encoder_stop(const encoder_t* dev);
 /**
  * @brief Get the current number of ticks for the encoder.
  * @param[in] dev: Encoder device
- * @param[out] tick_65536s: Ticks in the 65536s place
- * @param[out] tick_1s: Ticks in the ones place
+ * @return Pointer to encoder data
  *
  * Assume this is called fast enough that any wrap around in the counter is closer to the last measurement
  */
-void encoder_get_ticks(encoder_t* dev, int32_t* tick_65536s, uint32_t* tick_1s);
+encoder_data_t* encoder_get_data(encoder_t* dev);
 
 /**
  * @brief Define the current encoder value as 0
