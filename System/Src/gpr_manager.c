@@ -8,8 +8,12 @@
 #include "signal_receiver.h"
 #include "stm32f7xx_hal.h"
 
+#define ADC_SAMPLING_RATE_HZ 		44000
+#define ADC_TARGET_INPUT_FREQ_HZ    ADC_SAMPLING_RATE_HZ / 2 * 0.9 // Nyquist frequency with 10% headroom to prevent aliasing
+
 static signal_generator_t sig_gen;
 static signal_receiver_t sig_rec;
+static signal_generator_t sig_rec_reference;
 
 /**
  * @brief Callback for when GPR signal generation is complete.
@@ -34,13 +38,26 @@ void gpr_manager_init() {
 			SystemCoreClock
 	);
 	signal_receiver_init(&sig_rec, SIGNAL_RECEIVER_ADC);
+	signal_generator_init(
+			&sig_rec_reference,
+			SIGNAL_RECEIVER_REF_SPI,
+			SIG_REC_REF_LE_GPIO_Port,
+			SIG_REC_REF_LE_Pin,
+			SIGNAL_RECEIVER_REF_TIMER,
+			SIGNAL_RECEIVER_REF_TIMER_CHANNEL,
+			SystemCoreClock
+	);
 }
 
 void gpr_record_start(double freq_mhz, uint32_t num_samples, double pulse_time_us) {
 	// Set output frequency of signal generator
 	signal_generator_set_output_freq(&sig_gen, freq_mhz);
+	// Set reference frequency for signal receiver and start the reference clock
+	signal_generator_set_output_freq(&sig_gen, freq_mhz - (ADC_TARGET_INPUT_FREQ_HZ / 1000000.));
+	signal_generator_start(&sig_rec_reference);
 	// Start recording on signal receiver
 	signal_receiver_start(&sig_rec, num_samples);
+
 
 	// Start signal generator and timer for stopping the signal generator
 	uint32_t new_period = (uint32_t) ((double) SystemCoreClock * (double) pulse_time_us / 1000000.0);
@@ -51,5 +68,10 @@ void gpr_record_start(double freq_mhz, uint32_t num_samples, double pulse_time_u
 }
 
 uint32_t* gpr_get_data(uint32_t* num_samples) {
-	return signal_receiver_get_data(&sig_rec, num_samples);
+	uint32_t* data = signal_receiver_get_data(&sig_rec, num_samples);
+	// Stop reference clock to signal receiver if signal receiver is done recording
+	if (data) {
+		signal_generator_stop(&sig_rec_reference);
+	}
+	return data;
 }
