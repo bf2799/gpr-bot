@@ -92,8 +92,6 @@ typedef struct signal_generator_t {
 	uint16_t le_pin;
 	TIM_HandleTypeDef* htim;
 	uint32_t tim_channel;
-	GPIO_TypeDef* on_port;
-	uint16_t on_pin;
 	double ref_clk_freq_mhz;
 	register_t regs[6];
 	double freq_pfd_mhz;
@@ -107,11 +105,9 @@ typedef struct signal_generator_t {
  * @param[in] le_pin: Latch enable GPIO pin
  * @param[in] htim: Timer handle for reference clock
  * @param[in] tim_channel: Timer channel for reference clock
- * @param[in] on_port: Transmitter switch GPIO port
- * @param[in] on_pin: Transmitter switch GPIO pin
  * @param[in] ref_clk_freq_mhz: Frequency of the reference clock in MHz
  */
-void signal_generator_init(signal_generator_t* dev, SPI_HandleTypeDef* hspi, GPIO_TypeDef* le_port, uint16_t le_pin, TIM_HandleTypeDef* htim, uint32_t tim_channel, GPIO_TypeDef* on_port, uint16_t on_pin, double ref_clk_freq_mhz);
+void signal_generator_init(signal_generator_t* dev, SPI_HandleTypeDef* hspi, GPIO_TypeDef* le_port, uint16_t le_pin, TIM_HandleTypeDef* htim, uint32_t tim_channel, double ref_clk_freq_mhz);
 
 /**
  * @brief Set the output frequency of the signal generator (137.5MHz - 4.4GHz)

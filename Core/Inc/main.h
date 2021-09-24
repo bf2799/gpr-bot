@@ -122,8 +122,6 @@ void Error_Handler(void);
 #define TCK_GPIO_Port GPIOA
 #define SIG_GEN_CLK_Pin GPIO_PIN_10
 #define SIG_GEN_CLK_GPIO_Port GPIOC
-#define SIG_GEN_ON_Pin GPIO_PIN_11
-#define SIG_GEN_ON_GPIO_Port GPIOC
 #define SIG_GEN_DATA_Pin GPIO_PIN_12
 #define SIG_GEN_DATA_GPIO_Port GPIOC
 #define RADIO_RXI_Pin GPIO_PIN_0

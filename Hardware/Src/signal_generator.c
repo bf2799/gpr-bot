@@ -30,10 +30,10 @@ static void signal_generator_write_register(const signal_generator_t* dev, uint8
 	HAL_GPIO_WritePin(dev->le_port, dev->le_pin, GPIO_PIN_SET);
 }
 
-void signal_generator_init(signal_generator_t* dev, SPI_HandleTypeDef* hspi, GPIO_TypeDef* le_port, uint16_t le_pin, TIM_HandleTypeDef* htim, uint32_t tim_channel, GPIO_TypeDef* on_port, uint16_t on_pin, double ref_clk_freq_mhz) {
+void signal_generator_init(signal_generator_t* dev, SPI_HandleTypeDef* hspi, GPIO_TypeDef* le_port, uint16_t le_pin, TIM_HandleTypeDef* htim, uint32_t tim_channel, double ref_clk_freq_mhz) {
 
 	// Check user inputs
-	if (!dev || !hspi || !le_port || !htim || !on_port) {
+	if (!dev || !hspi || !le_port || !htim) {
 		return;
 	}
 
@@ -41,8 +41,6 @@ void signal_generator_init(signal_generator_t* dev, SPI_HandleTypeDef* hspi, GPI
 	dev->hspi = hspi;
 	dev->le_port = le_port;
 	dev->le_pin = le_pin;
-	dev->on_port = on_port;
-	dev->on_pin = on_pin;
 	dev->htim = htim;
 	dev->tim_channel = tim_channel;
 	dev->ref_clk_freq_mhz = ref_clk_freq_mhz;
@@ -121,12 +119,6 @@ void signal_generator_init(signal_generator_t* dev, SPI_HandleTypeDef* hspi, GPI
 	for (uint8_t i = 5; i >= 0; i++) {
 		signal_generator_write_register(dev, i);
 	}
-
-	// Turn on reference clock
-	HAL_TIM_OC_Start(dev->htim, dev->tim_channel);
-
-	// Turn off transmitter to start
-	HAL_GPIO_WritePin(dev->on_port, dev->on_pin, GPIO_PIN_RESET);
 }
 
 void signal_generator_set_output_freq(signal_generator_t* dev, double freq_mhz) {
@@ -160,7 +152,8 @@ void signal_generator_start(const signal_generator_t* dev) {
 		return;
 	}
 
-	HAL_GPIO_WritePin(dev->on_port, dev->on_pin, GPIO_PIN_SET);
+	// Turn on reference clock
+	HAL_TIM_OC_Start(dev->htim, dev->tim_channel);
 }
 
 void signal_generator_stop(const signal_generator_t* dev) {
@@ -168,6 +161,7 @@ void signal_generator_stop(const signal_generator_t* dev) {
 		return;
 	}
 
-	HAL_GPIO_WritePin(dev->on_port, dev->on_pin, GPIO_PIN_RESET);
+	// Turn off reference clock
+	HAL_TIM_OC_Stop(dev->htim, dev->tim_channel);
 }
 

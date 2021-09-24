@@ -31,8 +31,6 @@ void gpr_manager_init() {
 			SIG_GEN_LE_Pin,
 			SIGNAL_GENERATOR_TIMER,
 			SIGNAL_GENERATOR_TIMER_CHANNEL,
-			SIG_GEN_ON_GPIO_Port,
-			SIG_GEN_ON_Pin,
 			SystemCoreClock
 	);
 	signal_receiver_init(&sig_rec, SIGNAL_RECEIVER_ADC);
