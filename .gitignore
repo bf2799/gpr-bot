@@ -1,6 +1,6 @@
 # Directories
 .settings/
-Debug/
+Build/
 
 # Files
 .mxproject
