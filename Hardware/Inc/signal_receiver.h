@@ -11,7 +11,7 @@
 #include "stm32f7xx_hal.h"
 #include <stdbool.h>
 
-#define SIG_RECEIVER_MAX_DMA_SAMPLES 1000
+#define SIG_RECEIVER_MAX_DMA_SAMPLES 500
 
 typedef struct signal_receiver_t {
 	ADC_HandleTypeDef* hadc;

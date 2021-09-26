@@ -27,6 +27,7 @@ void signal_receiver_init(signal_receiver_t* dev, ADC_HandleTypeDef* hadc) {
 void signal_receiver_start(signal_receiver_t* dev, uint32_t num_samples) {
 	// Check user inputs
 	if (!dev || num_samples > SIG_RECEIVER_MAX_DMA_SAMPLES) {
+		num_samples = 0;
 		return;
 	}
 

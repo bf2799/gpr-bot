@@ -8,7 +8,7 @@
 #include "signal_receiver.h"
 #include "stm32f7xx_hal.h"
 
-#define ADC_SAMPLING_RATE_HZ 		44000
+#define ADC_SAMPLING_RATE_HZ 		1333333 + 1./3 // ADC_CLK / (Sampling Cycles + Resolution Cycles) = 24000000 / (3 + 15)
 #define ADC_TARGET_INPUT_FREQ_HZ    ADC_SAMPLING_RATE_HZ / 2 * 0.9 // Nyquist frequency with 10% headroom to prevent aliasing
 
 static signal_generator_t sig_gen;
