@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * File Name          : USB_OTG.c
-  * Description        : This file provides code for the configuration
-  *                      of the USB_OTG instances.
+  * @file    usb_otg.c
+  * @brief   This file provides code for the configuration
+  *          of the USB_OTG instances.
   ******************************************************************************
   * @attention
   *
@@ -31,6 +31,13 @@ PCD_HandleTypeDef hpcd_USB_OTG_FS;
 void MX_USB_OTG_FS_PCD_Init(void)
 {
 
+  /* USER CODE BEGIN USB_OTG_FS_Init 0 */
+
+  /* USER CODE END USB_OTG_FS_Init 0 */
+
+  /* USER CODE BEGIN USB_OTG_FS_Init 1 */
+
+  /* USER CODE END USB_OTG_FS_Init 1 */
   hpcd_USB_OTG_FS.Instance = USB_OTG_FS;
   hpcd_USB_OTG_FS.Init.dev_endpoints = 6;
   hpcd_USB_OTG_FS.Init.speed = PCD_SPEED_FULL;
@@ -45,6 +52,9 @@ void MX_USB_OTG_FS_PCD_Init(void)
   {
     Error_Handler();
   }
+  /* USER CODE BEGIN USB_OTG_FS_Init 2 */
+
+  /* USER CODE END USB_OTG_FS_Init 2 */
 
 }
 
@@ -57,14 +67,14 @@ void HAL_PCD_MspInit(PCD_HandleTypeDef* pcdHandle)
   /* USER CODE BEGIN USB_OTG_FS_MspInit 0 */
 
   /* USER CODE END USB_OTG_FS_MspInit 0 */
-  
+
     __HAL_RCC_GPIOA_CLK_ENABLE();
-    /**USB_OTG_FS GPIO Configuration    
+    /**USB_OTG_FS GPIO Configuration
     PA8     ------> USB_OTG_FS_SOF
     PA9     ------> USB_OTG_FS_VBUS
     PA10     ------> USB_OTG_FS_ID
     PA11     ------> USB_OTG_FS_DM
-    PA12     ------> USB_OTG_FS_DP 
+    PA12     ------> USB_OTG_FS_DP
     */
     GPIO_InitStruct.Pin = USB_SOF_Pin|USB_ID_Pin|USB_DM_Pin|USB_DP_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
@@ -96,22 +106,22 @@ void HAL_PCD_MspDeInit(PCD_HandleTypeDef* pcdHandle)
   /* USER CODE END USB_OTG_FS_MspDeInit 0 */
     /* Peripheral clock disable */
     __HAL_RCC_USB_OTG_FS_CLK_DISABLE();
-  
-    /**USB_OTG_FS GPIO Configuration    
+
+    /**USB_OTG_FS GPIO Configuration
     PA8     ------> USB_OTG_FS_SOF
     PA9     ------> USB_OTG_FS_VBUS
     PA10     ------> USB_OTG_FS_ID
     PA11     ------> USB_OTG_FS_DM
-    PA12     ------> USB_OTG_FS_DP 
+    PA12     ------> USB_OTG_FS_DP
     */
-    HAL_GPIO_DeInit(GPIOA, USB_SOF_Pin|USB_VBUS_Pin|USB_ID_Pin|USB_DM_Pin 
+    HAL_GPIO_DeInit(GPIOA, USB_SOF_Pin|USB_VBUS_Pin|USB_ID_Pin|USB_DM_Pin
                           |USB_DP_Pin);
 
   /* USER CODE BEGIN USB_OTG_FS_MspDeInit 1 */
 
   /* USER CODE END USB_OTG_FS_MspDeInit 1 */
   }
-} 
+}
 
 /* USER CODE BEGIN 1 */
 

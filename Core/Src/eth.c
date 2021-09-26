@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * File Name          : ETH.c
-  * Description        : This file provides code for the configuration
-  *                      of the ETH instances.
+  * @file    eth.c
+  * @brief   This file provides code for the configuration
+  *          of the ETH instances.
   ******************************************************************************
   * @attention
   *
@@ -30,15 +30,27 @@ ETH_HandleTypeDef heth;
 void MX_ETH_Init(void)
 {
 
+  /* USER CODE BEGIN ETH_Init 0 */
+
+  /* USER CODE END ETH_Init 0 */
+
+   static uint8_t MACAddr[6];
+
+  /* USER CODE BEGIN ETH_Init 1 */
+
+  /* USER CODE END ETH_Init 1 */
   heth.Instance = ETH;
   heth.Init.AutoNegotiation = ETH_AUTONEGOTIATION_ENABLE;
+  heth.Init.Speed = ETH_SPEED_100M;
+  heth.Init.DuplexMode = ETH_MODE_FULLDUPLEX;
   heth.Init.PhyAddress = LAN8742A_PHY_ADDRESS;
-  heth.Init.MACAddr[0] =   0x00;
-  heth.Init.MACAddr[1] =   0x80;
-  heth.Init.MACAddr[2] =   0xE1;
-  heth.Init.MACAddr[3] =   0x00;
-  heth.Init.MACAddr[4] =   0x00;
-  heth.Init.MACAddr[5] =   0x00;
+  MACAddr[0] = 0x00;
+  MACAddr[1] = 0x80;
+  MACAddr[2] = 0xE1;
+  MACAddr[3] = 0x00;
+  MACAddr[4] = 0x00;
+  MACAddr[5] = 0x00;
+  heth.Init.MACAddr = &MACAddr[0];
   heth.Init.RxMode = ETH_RXPOLLING_MODE;
   heth.Init.ChecksumMode = ETH_CHECKSUM_BY_HARDWARE;
   heth.Init.MediaInterface = ETH_MEDIA_INTERFACE_RMII;
@@ -51,6 +63,9 @@ void MX_ETH_Init(void)
   {
     Error_Handler();
   }
+  /* USER CODE BEGIN ETH_Init 2 */
+
+  /* USER CODE END ETH_Init 2 */
 
 }
 
@@ -65,12 +80,12 @@ void HAL_ETH_MspInit(ETH_HandleTypeDef* ethHandle)
   /* USER CODE END ETH_MspInit 0 */
     /* ETH clock enable */
     __HAL_RCC_ETH_CLK_ENABLE();
-  
+
     __HAL_RCC_GPIOC_CLK_ENABLE();
     __HAL_RCC_GPIOA_CLK_ENABLE();
     __HAL_RCC_GPIOB_CLK_ENABLE();
     __HAL_RCC_GPIOG_CLK_ENABLE();
-    /**ETH GPIO Configuration    
+    /**ETH GPIO Configuration
     PC1     ------> ETH_MDC
     PA1     ------> ETH_REF_CLK
     PA2     ------> ETH_MDIO
@@ -79,7 +94,7 @@ void HAL_ETH_MspInit(ETH_HandleTypeDef* ethHandle)
     PC5     ------> ETH_RXD1
     PB13     ------> ETH_TXD1
     PG11     ------> ETH_TX_EN
-    PG13     ------> ETH_TXD0 
+    PG13     ------> ETH_TXD0
     */
     GPIO_InitStruct.Pin = RMII_MDC_Pin|RMII_RXD0_Pin|RMII_RXD1_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
@@ -125,8 +140,8 @@ void HAL_ETH_MspDeInit(ETH_HandleTypeDef* ethHandle)
   /* USER CODE END ETH_MspDeInit 0 */
     /* Peripheral clock disable */
     __HAL_RCC_ETH_CLK_DISABLE();
-  
-    /**ETH GPIO Configuration    
+
+    /**ETH GPIO Configuration
     PC1     ------> ETH_MDC
     PA1     ------> ETH_REF_CLK
     PA2     ------> ETH_MDIO
@@ -135,7 +150,7 @@ void HAL_ETH_MspDeInit(ETH_HandleTypeDef* ethHandle)
     PC5     ------> ETH_RXD1
     PB13     ------> ETH_TXD1
     PG11     ------> ETH_TX_EN
-    PG13     ------> ETH_TXD0 
+    PG13     ------> ETH_TXD0
     */
     HAL_GPIO_DeInit(GPIOC, RMII_MDC_Pin|RMII_RXD0_Pin|RMII_RXD1_Pin);
 
@@ -149,7 +164,7 @@ void HAL_ETH_MspDeInit(ETH_HandleTypeDef* ethHandle)
 
   /* USER CODE END ETH_MspDeInit 1 */
   }
-} 
+}
 
 /* USER CODE BEGIN 1 */
 
