@@ -27,17 +27,29 @@ typedef enum {
 	NUM_SENSORS
 } localization_sensor_type_t;
 
-typedef union sensor_data_t {
-	encoder_data_t encoder_data;
-	gps_data_t gps_data;
-	imu_data_t imu_data;
-} localization_sensor_data_t;
+typedef struct vector_3d {
+	double ew;
+	double ns;
+	double ud;
+} vector_3d;
 
-typedef struct sensor_t {
-	bool enabled;
-	bool updated;
-	localization_sensor_data_t last_data;
-} localization_sensor_t;
+typedef struct quaternion_t {
+	double w;
+	vector_3d vec;
+} quaternion_t;
+
+/**
+ * All represented in three dimensions, {east-west, north-south, up-down}
+ * Reference for EW and NS may change depending on application.
+ * Reference for UD is initial robot altitude
+ * Assume the robot travels within a small enough area that the curvature of the earth can be ignored
+ */
+typedef struct localization_estimate_t {
+	vector_3d pos;
+	vector_3d vel;
+	quaternion_t heading;
+	quaternion_t ang_vel;
+} localization_estimate_t;
 
 /**
  * @brief Initializes sensors internally
@@ -50,6 +62,12 @@ void localization_manager_init();
  * @param[in] b_enable: Whether to enable (true) or disable (false) sensor from collecting
  */
 void localization_manager_sensor_enable(localization_sensor_type_t sensor_type, bool b_enable);
+
+/**
+ * @brief Updates robot pose and velocity estimates by getting new sensor data
+ * @return Pointer to current localization estimate
+ */
+localization_estimate_t* localization_manager_update_estimates();
 
 #ifdef __cplusplus
 }

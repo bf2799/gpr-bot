@@ -78,19 +78,12 @@ imu_data_t* imu_get_data(imu_t* dev) {
 	// Set current I2C handle for callbacks
 	hi2c_cur = dev->hi2c;
 
-	// Get heading as euler angles
-	struct bno055_euler_double_t temp_euler;
-	if (bno055_convert_double_euler_hpr_rad(&temp_euler) != BNO055_SUCCESS) {
-		return NULL;
-	}
-	dev->imu_data.euler = temp_euler;
-
 	// Get heading as quaternion
-	struct bno055_quaternion_t temp_q;
-	if (bno055_read_quaternion_wxyz(&temp_q) != BNO055_SUCCESS) {
+	struct bno055_euler_double_t temp_heading;
+	if (bno055_convert_double_euler_hpr_rad(&temp_heading) != BNO055_SUCCESS) {
 		return NULL;
 	}
-	dev->imu_data.q = temp_q;
+	dev->imu_data.heading = temp_heading;
 
 	// Get linear acceleration
 	struct bno055_linear_accel_double_t temp_linear_accel;
