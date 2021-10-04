@@ -15,44 +15,33 @@ This software runs on an STM32F767 microcontroller. Expected attached hardware i
 
 ## Scheduler
 - Entrypoint of custom software
-- Defines bare-metal architecture for system with scheduler design pattern
-- Ensures perception manager runs and passes "perception" to planning manager
-- Ensures planning manager runs and passes "perception" and "plan" to control manager
+- Controls initialization, running, and cleanup of current state
+- Ensures code loops run at a fixed rate for best robot perception and control
+- Contains primary state machine, finding next state based on current state and its "end status"
 
-## Perception Manager
-- Tracks what information should be gathered from environment (what managers should be run)
-- Conglomerates user, localization, and radar input data into a single perception vector
+## States
+- Each state has a specific set of tasks to run once at the beginning, every time through its loop, and once at its end
+- State loops return an "end status" as an indicator to the scheduler of an important event
 
-### UI Manager
+## UI Manager
 - Gathers raw button values from RC Receiver driver
 - Tracks button states from RC Receiver
 - Converts button states into meaningful commands
 
-### Localization Manager
+## Localization Manager
 - Gathers sensor data from encoders, GPS, and IMU if available
 - Tracks estimated robot pose, velocity, and uncertainty in those measurements
 - Updates estimated pose, velocity, and uncertainty with new sensor data using Kalman filtering
 
-### GPR Manager
+## GPR Manager
 - Controls timing of signal generation, signal reception, and reference clock for signal receiving mixing
 - Provides method for changing state-specific GPR parameters (pulse frequency, pulse width, and sample length)
 
-## Planning Manager
-- Makes sure plans always run and are provided with perception vector. No external hardware communication exists in the whole planning branch
-- Conglomerates plans developed by all sub-managers into a single plan
-
-### State Manager
-- Primary state machine. Next state is chosen based on current state and perception vector
-
-## Control Manager
-- References state field in plan to generate a state-specific action list
-- Runs all sub-managers indicated by action list, ensuring each is provided a perception vector and a plan
-
-### Telemetry Manager
+## Telemetry Manager
 - Holds definition for telemetered packet protocol, including location, GPR frequency, and recorded GPR data in the body
 - Controls timing of radio to prevent oversending
 
-### Drive Manager
+## Drive Manager
 - Scales user drive setpoints as needed to maintain physically attainable movement
 - Adjusts motor setpoints based on drive setpoints and current pose/velocity
 - Passes motor setpoints to motor controller driver

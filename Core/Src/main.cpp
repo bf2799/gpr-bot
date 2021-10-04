@@ -31,7 +31,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "scheduler.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -109,7 +109,7 @@ int main(void)
   MX_UART4_Init();
   MX_TIM11_Init();
   /* USER CODE BEGIN 2 */
-
+  scheduler_run();
   /* USER CODE END 2 */
 
   /* Infinite loop */

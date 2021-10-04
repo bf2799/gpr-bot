@@ -1,10 +1,10 @@
 /*
  * scheduler.h
  *
- * Entrypoint of custom software.
- * Defines bare-metal architecture for system with scheduler design pattern.
- * Ensures perception manager runs and passes "perception" to planning manager.
- * Ensures planning manager runs and passes "perception" and "plan" to control manager.
+ * Entrypoint of custom software
+ * Controls initialization, running, and cleanup of current state
+ * Ensures code loops run at a fixed rate for best robot perception and control
+ * Contains primary state machine, finding next state based on current state and its "end status"
  */
 
 #ifndef INC_SCHEDULER_H_
