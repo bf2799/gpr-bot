@@ -18,6 +18,7 @@ This software runs on an STM32F767 microcontroller. Expected attached hardware i
 - Controls initialization, running, and cleanup of current state
 - Ensures code loops run at a fixed rate for best robot perception and control
 - Contains primary state machine, finding next state based on current state and its "end status"
+![State Machine](Media/State_Machine.JPG)
 
 ## States
 - Each state has a specific set of tasks to run once at the beginning, every time through its loop, and once at its end
