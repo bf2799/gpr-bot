@@ -36,24 +36,42 @@ static state_id get_next_state(end_status_t end_status) {
 	switch(p_current_state->get_id()) {
 	case state_id::Disabled:
 		switch(end_status) {
+		case end_status_t::SystemEnabled:
+			return state_id::Drive;
 		default:
 			break;
 		}
 		break;
 	case state_id::Drive:
 		switch(end_status) {
+		case end_status_t::SystemDisabled:
+			return state_id::Disabled;
+		case end_status_t::RecordingStarted:
+			return state_id::Record;
 		default:
 			break;
 		}
 		break;
 	case state_id::Record:
 		switch(end_status) {
+		case end_status_t::SystemDisabled:
+			return state_id::Disabled;
+		case end_status_t::RecordingCancelled:
+			return state_id::Drive;
+		case end_status_t::RecordingComplete:
+			return state_id::Relocate;
 		default:
 			break;
 		}
 		break;
 	case state_id::Relocate:
 		switch(end_status) {
+		case end_status_t::SystemDisabled:
+			return state_id::Disabled;
+		case end_status_t::RecordingCancelled:
+			return state_id::Drive;
+		case end_status_t::RelocationComplete:
+			return state_id::Record;
 		default:
 			break;
 		}

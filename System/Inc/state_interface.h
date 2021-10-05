@@ -12,7 +12,13 @@ extern "C"{
 #include <cstdint>
 
 typedef enum {
-	NoChange
+	NoChange,
+	RecordingStarted,
+	RecordingCancelled,
+	RecordingComplete,
+	RelocationComplete,
+	SystemDisabled,
+	SystemEnabled
 } end_status_t;
 
 class State {
