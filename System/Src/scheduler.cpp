@@ -4,7 +4,10 @@
 
 #include "scheduler.h"
 
-#include "state_interface.hpp"
+#include "state_disabled.h"
+#include "state_drive.h"
+#include "state_record.h"
+#include "state_relocate.h"
 #include "stm32f7xx_hal.h"
 
 #define LOOP_PERIOD_MS 10  // How often a loop of the code should be run
@@ -13,6 +16,10 @@ static State* p_current_state;
 static State* p_next_state;
 
 typedef enum state_id {
+	Disabled,
+	Drive,
+	Record,
+	Relocate,
 	NUM_STATES = 0,
 	UNKNOWN
 } state_id;
@@ -26,18 +33,54 @@ static state_id get_next_state(end_status_t end_status) {
 	if (end_status == end_status_t::NoChange) {
 		return (state_id) p_current_state->get_id();
 	}
+	switch(p_current_state->get_id()) {
+	case state_id::Disabled:
+		switch(end_status) {
+		default:
+			break;
+		}
+		break;
+	case state_id::Drive:
+		switch(end_status) {
+		default:
+			break;
+		}
+		break;
+	case state_id::Record:
+		switch(end_status) {
+		default:
+			break;
+		}
+		break;
+	case state_id::Relocate:
+		switch(end_status) {
+		default:
+			break;
+		}
+		break;
+	default:
+		break;
+	}
 	return state_id::UNKNOWN;
 }
 
 void scheduler_run() {
 
+	DisabledState disabled_state = DisabledState(state_id::Disabled);
+	DriveState drive_state = DriveState(state_id::Drive);
+	RecordState record_state = RecordState(state_id::Record);
+	RelocateState relocate_state = RelocateState(state_id::Relocate);
+
 	State* states[] = {
-		nullptr
+		&disabled_state,
+		&drive_state,
+		&record_state,
+		&relocate_state
 	};
 
 	// Initialize the current and next states
 	p_current_state = nullptr;
-	p_next_state = nullptr;
+	p_next_state = &disabled_state;
 
 	// Helper functions throughout infinite loop
 	uint32_t last_time = HAL_GetTick();

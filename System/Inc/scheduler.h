@@ -10,9 +10,17 @@
 #ifndef INC_SCHEDULER_H_
 #define INC_SCHEDULER_H_
 
+#ifdef __cplusplus
+extern "C"{
+#endif
+
 /**
  * Runs the scheduler in an infinite loop
  */
 void scheduler_run();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* INC_SCHEDULER_H_ */
