@@ -53,6 +53,7 @@
 									<listOptionValue builtIn="false" value="../Hardware/Inc"/>
 									<listOptionValue builtIn="false" value="../Libraries/Inc"/>
 									<listOptionValue builtIn="false" value="../System/Inc"/>
+									<listOptionValue builtIn="false" value="../System/States/Inc"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.903786405" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>
@@ -72,6 +73,8 @@
 									<listOptionValue builtIn="false" value="../Drivers/STM32F7xx_HAL_Driver/Inc/Legacy"/>
 									<listOptionValue builtIn="false" value="../Hardware/Inc"/>
 									<listOptionValue builtIn="false" value="../Libraries/Inc"/>
+									<listOptionValue builtIn="false" value="../System/Inc"/>
+									<listOptionValue builtIn="false" value="../System/States/Inc"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.input.cpp.648396582" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.input.cpp"/>
 							</tool>
@@ -127,4 +130,5 @@
 		</scannerConfigBuildInfo>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
+	<storageModule moduleId="refreshScope"/>
 </cproject>
