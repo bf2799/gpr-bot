@@ -48,6 +48,8 @@ void telemetry_manager_send_gpr_data(double transmit_freq, double mixer_ref_freq
  * @brief Telemeter data that helps monitor the robot
  * @param battery_voltage: Voltage of battery
  */
-void telemetry_manager_send_monitoring_data(double battery_voltage);
+void telemetry_manager_send_monitoring_data(double battery_voltage);\
+
+bool telemetry_manager_ready_to_send();
 
 #endif /* INC_TELEMETRY_MANAGER_H_ */
