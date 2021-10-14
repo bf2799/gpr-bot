@@ -90,6 +90,14 @@ void Error_Handler(void);
 #define RMII_RXD1_GPIO_Port GPIOC
 #define LD1_Pin GPIO_PIN_0
 #define LD1_GPIO_Port GPIOB
+#define MOTOR_L_PWM1_Pin GPIO_PIN_9
+#define MOTOR_L_PWM1_GPIO_Port GPIOE
+#define MOTOR_L_PWM2_Pin GPIO_PIN_11
+#define MOTOR_L_PWM2_GPIO_Port GPIOE
+#define MOTOR_R_PWM1_Pin GPIO_PIN_13
+#define MOTOR_R_PWM1_GPIO_Port GPIOE
+#define MOTOR_R_PWM2_Pin GPIO_PIN_14
+#define MOTOR_R_PWM2_GPIO_Port GPIOE
 #define SIG_REC_REF_CLKB10_Pin GPIO_PIN_10
 #define SIG_REC_REF_CLKB10_GPIO_Port GPIOB
 #define SIG_REC_REF_LE_Pin GPIO_PIN_11
