@@ -17,6 +17,7 @@
 #define SIGNAL_RECEIVER_REF_TIMER			&htim11
 #define SIGNAL_RECEIVER_REF_TIMER_CHANNEL	TIM_CHANNEL_1
 #define GPR_MANAGER_TIMER					&htim7
+#define RADIO_UART							&huart4
 
 #include "adc.h"
 #include "i2c.h"
