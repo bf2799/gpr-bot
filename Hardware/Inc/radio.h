@@ -10,6 +10,9 @@
 
 #include "stm32f7xx_hal.h"
 
+#define RADIO_TRANSMIT_SPEED_BPS 12500 // Radio transmit speed in bytes per second
+#define RADIO_QUEUE_SIZE 256			// How many bytes can fit in the radio's internal transmit queue
+
 typedef struct radio_t {
 	UART_HandleTypeDef* huart;
 } radio_t;
