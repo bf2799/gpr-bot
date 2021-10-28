@@ -18,7 +18,12 @@ typedef struct drive_state_estimation_t {
 /**
  * @brief Initializes drive manager hardware
  */
-void driver_manager_init();
+void drive_manager_init();
+
+/**
+ * @brief Disable drive manager by ensuring motors aren't getting any input
+ */
+void drive_manager_disable();
 
 /**
  * @brief Change the velocity setpoint of the robot
