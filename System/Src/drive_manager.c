@@ -102,8 +102,6 @@ void drive_manager_run(drive_state_estimation_t* state) {
 	// Convert state setpoints to wheel velocity setpoints
 	// Convert state estimates to wheel velocity setpoints
 
-	// Calculate wheel velocity error
-
 	// Calculate control wheel velocity setpoints based on PID feedback
 
 	// Convert control wheel velocity setpoints to motor percentages
