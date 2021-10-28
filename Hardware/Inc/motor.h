@@ -10,6 +10,7 @@
 #ifndef INC_MOTOR_H_
 #define INC_MOTOR_H_
 
+#include <stdbool.h>
 #include "stm32f7xx_hal.h"
 
 typedef struct motor_t {
