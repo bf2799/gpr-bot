@@ -21,7 +21,6 @@
 #include "main.h"
 #include "adc.h"
 #include "dma.h"
-#include "eth.h"
 #include "i2c.h"
 #include "spi.h"
 #include "tim.h"
@@ -94,7 +93,6 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_DMA_Init();
-  MX_ETH_Init();
   MX_USART3_UART_Init();
   MX_USB_OTG_FS_PCD_Init();
   MX_SPI3_Init();
