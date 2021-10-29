@@ -6,6 +6,10 @@
 #ifndef INC_SENSOR_MANAGER_H_
 #define INC_SENSOR_MANAGER_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdbool.h>
 
 #include "encoder.h"
@@ -59,5 +63,9 @@ void sensor_read_data();
  * Note that some sensors may not always have new data to update with even if enabled, which is reflected in the "updated" field
  */
 sensor_data_t* sensor_get_data(sensor_type_t sensor_type);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* INC_SENSOR_MANAGER_H_ */
