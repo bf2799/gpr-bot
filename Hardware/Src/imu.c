@@ -63,7 +63,15 @@ void imu_init(imu_t* dev, I2C_HandleTypeDef* hi2c) {
 	dev->bno_dev.bus_read = imu_i2c_read;
 	dev->bno_dev.bus_write = imu_i2c_write;
 	dev->bno_dev.delay_msec = imu_delay;
+	hi2c_cur = dev->hi2c;
 	bno055_init(&dev->bno_dev);
+
+	// Set power mode, sensor reading mode, and correct units
+	bno055_set_power_mode(BNO055_POWER_MODE_NORMAL);
+	bno055_set_operation_mode(BNO055_OPERATION_MODE_NDOF);
+	bno055_set_euler_unit(BNO055_EULER_UNIT_RAD);
+	bno055_set_gyro_unit(BNO055_GYRO_UNIT_RPS);
+	bno055_set_accel_unit(BNO055_ACCEL_UNIT_MSQ);
 }
 
 imu_data_t* imu_get_data(imu_t* dev) {
@@ -71,8 +79,8 @@ imu_data_t* imu_get_data(imu_t* dev) {
 	hi2c_cur = dev->hi2c;
 
 	// Get heading as euler angles
-	struct bno055_euler_t temp_euler;
-	if (bno055_read_euler_hrp(&temp_euler) != BNO055_SUCCESS) {
+	struct bno055_euler_double_t temp_euler;
+	if (bno055_convert_double_euler_hpr_rad(&temp_euler) != BNO055_SUCCESS) {
 		return NULL;
 	}
 	dev->imu_data.euler = temp_euler;
@@ -85,8 +93,8 @@ imu_data_t* imu_get_data(imu_t* dev) {
 	dev->imu_data.q = temp_q;
 
 	// Get linear acceleration
-	struct bno055_linear_accel_t temp_linear_accel;
-	if (bno055_read_linear_accel_xyz(&temp_linear_accel) != BNO055_SUCCESS) {
+	struct bno055_linear_accel_double_t temp_linear_accel;
+	if (bno055_convert_double_linear_accel_xyz_msq(&temp_linear_accel) != BNO055_SUCCESS) {
 		return NULL;
 	}
 	dev->imu_data.linear_accel = temp_linear_accel;

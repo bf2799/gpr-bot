@@ -11,9 +11,9 @@
 #include "stm32f7xx_hal.h"
 
 typedef struct imu_data_t {
-	struct bno055_euler_t euler;
+	struct bno055_euler_double_t euler;
 	struct bno055_quaternion_t q;
-	struct bno055_linear_accel_t linear_accel;
+	struct bno055_linear_accel_double_t linear_accel;
 } imu_data_t;
 
 typedef struct imu_t {
