@@ -159,15 +159,13 @@ void drive_manager_run(drive_state_estimation_t* state) {
 	state_vel_to_wheel_vel(state->vel, state->ang_vel_yaw, &wheel_l_vel_mps_pv, &wheel_r_vel_mps_pv);
 
 	// Calculate control wheel velocity setpoints based on PID feedback
-	double wheel_l_vel_mps_control_setpoint = 0;
-	double wheel_r_vel_mps_control_setpoint = 0;
 	wheel_l_vel_mps_setpoint += pid_controller_run(&pid_ctrl_vel_wheel_l, wheel_l_vel_mps_setpoint, wheel_l_vel_mps_pv);
 	wheel_r_vel_mps_setpoint += pid_controller_run(&pid_ctrl_vel_wheel_r, wheel_r_vel_mps_setpoint, wheel_r_vel_mps_pv);
 
 	// Convert control wheel velocity setpoints to motor percentages
 	double motor_percent_l;
 	double motor_percent_r;
-	wheel_vels_to_motor_percents(wheel_l_vel_mps_control_setpoint, wheel_r_vel_mps_control_setpoint, &motor_percent_l, &motor_percent_r);
+	wheel_vels_to_motor_percents(wheel_l_vel_mps_setpoint, wheel_r_vel_mps_setpoint, &motor_percent_l, &motor_percent_r);
 
 	// Set left and right motor percentages
 	motor_set_percentage(&motor_l, motor_percent_l);
