@@ -34,7 +34,7 @@ void drive_manager_change_setpoint(double forward_vel_mps, double turn_vel_radps
 
 /**
  * @brief Runs a single instance of the drive control loop
- * @param state: Subset of estimated robot state that drive manager needs to run feedback loop
+ * @param[in] state: Subset of estimated robot state that drive manager needs to run feedback loop
  */
 void drive_manager_run(drive_state_estimation_t* state);
 
