@@ -63,7 +63,7 @@ void motor_set_percentage(motor_t* motor, double pct) {
 	// Reverse: PWM2 used with PWM1 off if last command wasn't forward
 	else if (pct < -MOTOR_ZERO_EPSILON_PERCENT && !motor->last_forward_drive) {
 		__HAL_TIM_SET_COMPARE(motor->htim_pwm1, motor->tim_channel_pwm1, 0);
-		__HAL_TIM_SET_COMPARE(motor->htim_pwm2, motor->tim_channel_pwm2, -new_pulse);
+		__HAL_TIM_SET_COMPARE(motor->htim_pwm2, motor->tim_channel_pwm2, new_pulse);
 		motor->last_reverse_drive = true;
 		motor->last_forward_drive = false;
 	}

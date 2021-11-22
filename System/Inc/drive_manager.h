@@ -9,6 +9,10 @@
 #ifndef INC_DRIVE_MANAGER_H_
 #define INC_DRIVE_MANAGER_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct drive_state_estimation_t {
 	double vel;
 	double ang_yaw;
@@ -37,5 +41,9 @@ void drive_manager_change_setpoint(double forward_vel_mps, double turn_vel_radps
  * @param[in] state: Subset of estimated robot state that drive manager needs to run feedback loop
  */
 void drive_manager_run(drive_state_estimation_t* state);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* INC_DRIVE_MANAGER_H_ */
