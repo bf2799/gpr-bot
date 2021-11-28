@@ -299,7 +299,7 @@ void planning_manager_follow_trajectory(pose2d_t cur_pose, double* forward_vel_m
 	}
 	else {
 		// Check if rotation is off by more than double stop band amount
-		if (fabs(sub_trajectory_start_pose.theta - cur_pose.theta) > 2 * TRAJECTORY_STOP_BAND_ANGLE) {
+		if (fabs(sub_trajectory_start_pose[current_sub_trajectory].theta - cur_pose.theta) > 2 * TRAJECTORY_STOP_BAND_ANGLE) {
 			*off_course = true;
 			return;
 		}
@@ -344,7 +344,7 @@ void planning_manager_follow_trajectory(pose2d_t cur_pose, double* forward_vel_m
 		double cur_trajectory_position = cur_relative_pos_x * cos(trajectory_rotation) - cur_relative_pos_y * sin(trajectory_rotation);
 		// Find current position on trajectory
 		for (int i = 0; i < 3; i++) {
-			if (cur_trajectory_position > active_trajectory[current_sub_trajectory][i] && cur_trajectory_position < active_trajectory[current_sub_trajectory][i + 1]) {
+			if (cur_trajectory_position > active_trajectory[current_sub_trajectory][i].pos && cur_trajectory_position < active_trajectory[current_sub_trajectory][i + 1].pos) {
 				// Interpolate to find correct velocities
 				*forward_vel_mps = interpolate(
 						active_trajectory[current_sub_trajectory][i].pos,
