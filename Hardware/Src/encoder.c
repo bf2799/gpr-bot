@@ -45,12 +45,13 @@ encoder_data_t* encoder_get_data(encoder_t* dev) {
 
 	uint32_t cur_ticks = dev->htim->Instance->CNT;
 
-	// If current ticks in lower third and last ticks in upper third, there was reverse wrap around
+	// If current ticks in lower third and last ticks in upper third, there was forward wrap around
 	if (cur_ticks < (dev->htim->Init.Period / 3) && dev->data.tick_1s > (dev->htim->Init.Period / 3 * 2)) {
-		dev->data.tick_65536s -= 1;
-	}
-	else if (cur_ticks > (dev->htim->Init.Period / 3 * 2) && dev->data.tick_1s < (dev->htim->Init.Period / 3)) {
 		dev->data.tick_65536s += 1;
+	}
+	// If current ticks in upper third and last ticks in lower third, there was reverse wrap around
+	else if (cur_ticks > (dev->htim->Init.Period / 3 * 2) && dev->data.tick_1s < (dev->htim->Init.Period / 3)) {
+		dev->data.tick_65536s -= 1;
 	}
 
 	dev->data.tick_1s = cur_ticks;
