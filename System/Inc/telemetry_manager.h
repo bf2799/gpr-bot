@@ -11,6 +11,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @brief Initialize telemetry manager and its underlying hardware
  */
@@ -56,6 +60,10 @@ bool telemetry_manager_send_gpr_data(double transmit_freq, double mixer_ref_freq
  * @param battery_voltage: Voltage of battery
  * @return Whether send was successfully queued (true) or not (false). Main cause of failure is full transmit queue
  */
-bool telemetry_manager_send_monitoring_data(double battery_voltage);\
+bool telemetry_manager_send_monitoring_data(double battery_voltage);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* INC_TELEMETRY_MANAGER_H_ */

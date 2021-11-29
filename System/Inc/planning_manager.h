@@ -28,6 +28,10 @@
 #ifndef INC_PLANNING_MANAGER_H_
 #define INC_PLANNING_MANAGER_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdbool.h>
 
 typedef struct pose2d_t {
@@ -53,5 +57,9 @@ void planning_manager_calculate_trajectory(pose2d_t start_pose, pose2d_t end_pos
  * @param[out] off_course: Whether robot is currently off-course from the trajectory (true) or on-course (false)
  */
 void planning_manager_follow_trajectory(pose2d_t cur_pose, double* forward_vel_mps, double* turn_vel_radps, bool* complete, bool* off_course);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* INC_PLANNING_MANAGER_H_ */

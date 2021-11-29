@@ -13,12 +13,12 @@ extern "C"{
 
 typedef enum {
 	NoChange,
-	RecordingStarted,
-	RecordingCancelled,
+	InitializationComplete,
+	LineComplete,
 	RecordingComplete,
-	RelocationComplete,
 	SystemDisabled,
-	SystemEnabled
+	SystemEnabled,
+	TrajectoryComplete
 } end_status_t;
 
 class State {

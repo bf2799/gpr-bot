@@ -1,11 +1,11 @@
 /*
- * state_relocate.h
+ * state_drive_line.h
  *
- * Robot is relocating to start driving and recording along a new line
+ * Robot drives straight along a line to get to the next recording point
  */
 
-#ifndef STATES_INC_STATE_RELOCATE_H_
-#define STATES_INC_STATE_RELOCATE_H_
+#ifndef STATES_INC_STATE_DRIVE_LINE_H_
+#define STATES_INC_STATE_DRIVE_LINE_H_
 
 #ifdef __cplusplus
 extern "C"{
@@ -13,7 +13,7 @@ extern "C"{
 
 #include "state_interface.h"
 
-class RelocateState : public State {
+class DriveLineState : public State {
 
 	public:
 		using State::State;
@@ -30,4 +30,4 @@ class RelocateState : public State {
 }
 #endif
 
-#endif /* STATES_INC_STATE_RELOCATE_H_ */
+#endif /* STATES_INC_STATE_DRIVE_LINE_H_ */

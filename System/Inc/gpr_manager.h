@@ -6,6 +6,10 @@
 #ifndef INC_GPR_MANAGER_H_
 #define INC_GPR_MANAGER_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -39,5 +43,9 @@ bool gpr_manager_loop_recording();
  * @return True if data retrieval was successful, False if failure (ie recording in progress)
  */
 bool gpr_manager_get_data(uint32_t** data, double** freqs_mhz, int* actual_num_steps, int* array_samples_per_step, int* actual_samples_per_step);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* INC_GPR_MANAGER_H_ */

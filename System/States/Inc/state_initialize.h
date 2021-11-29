@@ -1,11 +1,11 @@
 /*
- * state_drive.h
+ * state_initialize.h
  *
- * Robot movement is controlled by the operator. No GPR recording occurs
+ * Robot initializes all hardware and managers
  */
 
-#ifndef STATES_INC_STATE_DRIVE_H_
-#define STATES_INC_STATE_DRIVE_H_
+#ifndef STATES_INC_STATE_INITIALIZE_H_
+#define STATES_INC_STATE_INITIALIZE_H_
 
 #ifdef __cplusplus
 extern "C"{
@@ -13,7 +13,7 @@ extern "C"{
 
 #include "state_interface.h"
 
-class DriveState : public State {
+class InitializeState : public State {
 
 	public:
 		using State::State;
@@ -30,4 +30,4 @@ class DriveState : public State {
 }
 #endif
 
-#endif /* STATES_INC_STATE_DRIVE_H_ */
+#endif /* STATES_INC_STATE_INITIALIZE_H_ */
