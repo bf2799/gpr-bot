@@ -15,11 +15,28 @@
  * @param[in] cmd: 2-letter command to send
  * @param[in] param: Parameter following command
  */
-static void radio_send_cmd(radio_t* dev, const char* cmd, uint8_t param) {
-	char tx_data[5] = "AT";
-	memcpy(&tx_data[2], cmd, 2);
-	tx_data[5] = param;
-	HAL_UART_Transmit(dev->huart, (uint8_t*) tx_data, 4, RADIO_UART_TIMEOUT_MS);
+static void radio_send_cmd(radio_t* dev, const char* cmd, const char* param) {
+	int cmd_len = strlen(cmd);
+	int param_len = strlen(param);
+
+	// Set command
+	char tx_data[2 + cmd_len + 1 + param_len + 1];
+	memcpy(&tx_data, "AT", 2);
+	memcpy(&tx_data[2], cmd, cmd_len);
+
+	// Add space
+	memcpy(&tx_data[2 + cmd_len], " ", 1);
+
+	// Add parameter
+	memcpy(&tx_data[3 + cmd_len], param, param_len);
+
+	// Add carriage return
+	memcpy(&tx_data[3 + cmd_len + param_len], "\r", 1);
+
+	// Transmit
+	HAL_UART_Transmit(dev->huart, (uint8_t*) tx_data, 4 + cmd_len + param_len, RADIO_UART_TIMEOUT_MS);
+	uint8_t rx_data;
+	HAL_UART_Receive(dev->huart, &rx_data, 1, 1000);
 }
 
 void radio_init(radio_t* dev, UART_HandleTypeDef* huart) {
@@ -34,9 +51,11 @@ void radio_init(radio_t* dev, UART_HandleTypeDef* huart) {
 	// Assume most configurations are set up beforehand via XCTU, except those explicitly set below
 
 	// Set device to transparent operating mode (AP = 0) to define our own protocol
-	radio_send_cmd(dev, "AP", 0);
+	radio_send_cmd(dev, "AP", "0");
 	// Set packetization timeout (number of characters of silence to wait before sending packet) to 3
-	radio_send_cmd(dev, "RO", 3);
+	radio_send_cmd(dev, "RO", "3");
+	// Exit command mode
+	radio_send_cmd(dev, "CN\r", "");
 }
 
 void radio_transmit(radio_t* dev, uint8_t* data, uint16_t len) {
@@ -63,5 +82,6 @@ void radio_transmit(radio_t* dev, uint8_t* data, uint16_t len) {
 	tx_data[len + 4] = sum;
 
 	// Transmit packet to radio
+
 	HAL_UART_Transmit(dev->huart, tx_data, len + 5, RADIO_UART_TIMEOUT_MS);
 }

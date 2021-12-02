@@ -10,6 +10,8 @@
 #include "state_record.h"
 #include "stm32f7xx_hal.h"
 
+#include "telemetry_manager.h"
+
 #define LOOP_PERIOD_MS 10  // How often a loop of the code should be run
 
 static State* p_current_state;
@@ -89,6 +91,8 @@ void scheduler_run() {
 		&drive_state,
 		&record_state,
 	};
+
+	telemetry_manager_init();
 
 	// Initialize the current and next states
 	p_current_state = nullptr;

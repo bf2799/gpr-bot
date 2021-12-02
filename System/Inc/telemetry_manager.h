@@ -8,6 +8,10 @@
 #ifndef INC_TELEMETRY_MANAGER_H_
 #define INC_TELEMETRY_MANAGER_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdbool.h>
 #include <stdint.h>
 

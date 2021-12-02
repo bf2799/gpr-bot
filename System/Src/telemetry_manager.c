@@ -52,6 +52,11 @@ static void telemetry_manager_update_queue_size() {
 
 void telemetry_manager_init() {
 	radio_init(&radio, RADIO_UART);
+
+	uint8_t data[11] = "Hello there";
+	while (1) {
+		radio_transmit(&radio, data, 11);
+	}
 }
 
 bool telemetry_manager_send_relative_pose(double pos_x, double pos_y, double pos_z, double yaw, double roll, double pitch) {
