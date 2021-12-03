@@ -1,5 +1,5 @@
 /*
- * planning_manager.h
+ * trajectory_manager.h
  *
  * Holds an active 2D trajectory for the robot to follow in the global x-y plane from its starting pose.
  * All trajectories consist of three parts: an in-place rotation phase, a drive phase, and another in-place rotation phase.
@@ -25,8 +25,8 @@
  * Once it reaches target position, it can rotate to the correct heading.
  */
 
-#ifndef INC_PLANNING_MANAGER_H_
-#define INC_PLANNING_MANAGER_H_
+#ifndef INC_TRAJECTORY_MANAGER_H_
+#define INC_TRAJECTORY_MANAGER_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -46,7 +46,7 @@ typedef struct pose2d_t {
  * @param[in] end_pose: Pose for the robot to finish in
  * @param[in] speed_multiplier: 0-1 value to scale maximum planned speed of robot. Lower values will give more head room for control.
  */
-void planning_manager_calculate_trajectory(pose2d_t start_pose, pose2d_t end_pose, double speed_multiplier);
+void trajectory_manager_calculate_trajectory(pose2d_t start_pose, pose2d_t end_pose, double speed_multiplier);
 
 /**
  * @brief Follow the set trajectory given a current robot pose in the "flattened" x-y global frame
@@ -56,10 +56,10 @@ void planning_manager_calculate_trajectory(pose2d_t start_pose, pose2d_t end_pos
  * @param[out] complete: Whether trajectory is complete (true) or not (false)
  * @param[out] off_course: Whether robot is currently off-course from the trajectory (true) or on-course (false)
  */
-void planning_manager_follow_trajectory(pose2d_t cur_pose, double* forward_vel_mps, double* turn_vel_radps, bool* complete, bool* off_course);
+void trajectory_manager_follow_trajectory(pose2d_t cur_pose, double* forward_vel_mps, double* turn_vel_radps, bool* complete, bool* off_course);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* INC_PLANNING_MANAGER_H_ */
+#endif /* INC_TRAJECTORY_MANAGER_H_ */

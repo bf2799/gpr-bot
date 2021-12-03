@@ -1,8 +1,8 @@
 /*
- * planning_manager.c
+ * trajectory_manager.c
  */
 
-#include "planning_manager.h"
+#include "trajectory_manager.h"
 
 #include <math.h>
 
@@ -221,7 +221,7 @@ static void calculate_sub_trajectory_reference_poses(pose2d_t start_pose, pose2d
 	sub_trajectory_end_pose[FINAL_ROTATION] = end_pose;
 }
 
-void planning_manager_calculate_trajectory(pose2d_t start_pose, pose2d_t end_pose, double speed_multiplier) {
+void trajectory_manager_calculate_trajectory(pose2d_t start_pose, pose2d_t end_pose, double speed_multiplier) {
 
 	// Check and scale user inputs. Assume start pose and end pose angles have already been scaled to -PI to PI
 	if (speed_multiplier > 1) {
@@ -256,7 +256,7 @@ static double interpolate(double x_begin, double x_end, double y_begin, double y
 	return (y_end - y_begin) / (x_end - x_begin) * (x_interp_val - x_begin) + y_begin;
 }
 
-void planning_manager_follow_trajectory(pose2d_t cur_pose, double* forward_vel_mps, double* turn_vel_radps, bool* complete, bool* off_course) {
+void trajectory_manager_follow_trajectory(pose2d_t cur_pose, double* forward_vel_mps, double* turn_vel_radps, bool* complete, bool* off_course) {
 
 	// Set defaults for complete and off course
 	*complete = false;

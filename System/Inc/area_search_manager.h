@@ -7,9 +7,8 @@
 #ifndef INC_AREA_SEARCH_MANAGER_H_
 #define INC_AREA_SEARCH_MANAGER_H_
 
-#include "planning_manager.h"
-
 #include <stdbool.h>
+#include <trajectory_manager.h>
 
 /**
  * @brief Generates a rectangular area for the robot to search with a given number of passes and recording stops per pass.
