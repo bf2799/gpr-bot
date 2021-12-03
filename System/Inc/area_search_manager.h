@@ -7,8 +7,12 @@
 #ifndef INC_AREA_SEARCH_MANAGER_H_
 #define INC_AREA_SEARCH_MANAGER_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdbool.h>
-#include <trajectory_manager.h>
+#include "trajectory_manager.h"
 
 /**
  * @brief Generates a rectangular area for the robot to search with a given number of passes and recording stops per pass.
@@ -32,5 +36,9 @@ pose2d_t area_search_manager_retrieve_next_destination(bool* line_complete);
  * @brief Returns whether whole area was searched
  */
 bool area_search_manager_is_complete();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* INC_AREA_SEARCH_MANAGER_H_ */

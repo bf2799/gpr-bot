@@ -27,6 +27,13 @@ void area_search_manager_generate_area(double width_m, double length_m, int num_
 }
 
 pose2d_t area_search_manager_retrieve_next_destination(bool* line_complete) {
+
+	// Stop if area search area is complet
+	if (area_search_manager_is_complete()) {
+		*line_complete = true;
+		return;
+	}
+
 	// Calculate coordinates to go to in robot's original frame
 	int pass_number = num_destinations_reached / (area_stops_per_pass + 2);
 	double y_orig = pass_number * area_width_m / (area_num_passes - 1);

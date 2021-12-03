@@ -5,10 +5,9 @@
 #include "scheduler.h"
 
 #include "state_disabled.h"
-#include "state_drive_line.h"
+#include "state_drive.h"
 #include "state_initialize.h"
 #include "state_record.h"
-#include "state_relocate.h"
 #include "stm32f7xx_hal.h"
 
 #define LOOP_PERIOD_MS 10  // How often a loop of the code should be run
@@ -18,10 +17,9 @@ static State* p_next_state;
 
 typedef enum state_id {
 	Disabled = 0,
-	DriveLine,
+	Drive,
 	Initialize,
 	Record,
-	Relocate,
 	NUM_STATES,
 	UNKNOWN
 } state_id;
@@ -39,15 +37,13 @@ static state_id get_next_state(end_status_t end_status) {
 	case state_id::Disabled:
 		switch(end_status) {
 		case end_status_t::SystemEnabled:
-			return state_id::Record;
+			return state_id::Drive;
 		default:
 			break;
 		}
 		break;
-	case state_id::DriveLine:
+	case state_id::Drive:
 		switch(end_status) {
-		case end_status_t::LineComplete:
-			return state_id::Relocate;
 		case end_status_t::SystemDisabled:
 			return state_id::Disabled;
 		case end_status_t::TrajectoryComplete:
@@ -63,22 +59,13 @@ static state_id get_next_state(end_status_t end_status) {
 		default:
 			break;
 		}
+		break;
 	case state_id::Record:
 		switch(end_status) {
 		case end_status_t::RecordingComplete:
-			return state_id::DriveLine;
+			return state_id::Drive;
 		case end_status_t::SystemDisabled:
 			return state_id::Disabled;
-		default:
-			break;
-		}
-		break;
-	case state_id::Relocate:
-		switch(end_status) {
-		case end_status_t::SystemDisabled:
-			return state_id::Disabled;
-		case end_status_t::TrajectoryComplete:
-			return state_id::DriveLine;
 		default:
 			break;
 		}
@@ -93,16 +80,14 @@ void scheduler_run() {
 
 	InitializeState initialize_state = InitializeState(state_id::Initialize);
 	DisabledState disabled_state = DisabledState(state_id::Disabled);
-	DriveLineState drive_line_state = DriveLineState(state_id::DriveLine);
+	DriveState drive_state = DriveState(state_id::Drive);
 	RecordState record_state = RecordState(state_id::Record);
-	RelocateState relocate_state = RelocateState(state_id::Relocate);
 
 	State* states[] = {
 		&initialize_state,
 		&disabled_state,
-		&drive_line_state,
+		&drive_state,
 		&record_state,
-		&relocate_state
 	};
 
 	// Initialize the current and next states

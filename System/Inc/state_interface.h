@@ -14,7 +14,6 @@ extern "C"{
 typedef enum {
 	NoChange,
 	InitializationComplete,
-	LineComplete,
 	RecordingComplete,
 	SystemDisabled,
 	SystemEnabled,
