@@ -68,4 +68,5 @@ bool voltage_monitor_get_voltage(voltage_monitor_t* dev, double* voltage) {
 	}
 
 	*voltage = dev->adc_val * dev->volts_per_adc_inc * (R1 + R2) / R1;
+	return true;
 }
