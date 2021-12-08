@@ -107,6 +107,7 @@ int main(void)
   MX_UART4_Init();
   MX_TIM11_Init();
   MX_TIM1_Init();
+  MX_ADC2_Init();
   /* USER CODE BEGIN 2 */
   scheduler_run();
   /* USER CODE END 2 */
