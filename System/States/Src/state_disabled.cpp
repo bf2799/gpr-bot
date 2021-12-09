@@ -10,7 +10,7 @@ void DisabledState::init() {
 }
 
 end_status_t DisabledState::run() {
-	return end_status_t::NoChange;
+	return end_status_t::Enabled;
 }
 
 void DisabledState::cleanup() {

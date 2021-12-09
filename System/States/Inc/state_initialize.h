@@ -24,6 +24,13 @@ class InitializeState : public State {
 		end_status_t run(void) override;
 
 		void cleanup(void) override;
+
+	private:
+
+		static constexpr double SEARCH_AREA_WIDTH_M = 10;
+		static constexpr double SEARCH_AREA_LENGTH_M = 10;
+		static constexpr double NUM_PASSES = 10;
+		static constexpr double STOPS_PER_PASS = 0;
 };
 
 #ifdef __cplusplus
