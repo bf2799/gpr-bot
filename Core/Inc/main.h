@@ -72,7 +72,9 @@ void Error_Handler(void);
 #define MCO_GPIO_Port GPIOH
 #define SIG_REC_REF_DATA_Pin GPIO_PIN_3
 #define SIG_REC_REF_DATA_GPIO_Port GPIOC
-#define VOLTAGE_MONITOR_IN_Pin GPIO_PIN_1
+#define SIG_REC_ADC_Pin GPIO_PIN_0
+#define SIG_REC_ADC_GPIO_Port GPIOA
+#define VOLTAGE_MONITOR_IN_Pin GPIO_PIN_3
 #define VOLTAGE_MONITOR_IN_GPIO_Port GPIOA
 #define ENC_L_A_Pin GPIO_PIN_6
 #define ENC_L_A_GPIO_Port GPIOA
