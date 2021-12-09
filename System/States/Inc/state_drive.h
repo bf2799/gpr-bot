@@ -1,7 +1,7 @@
 /*
  * state_drive.h
  *
- * Robot movement is controlled by the operator. No GPR recording occurs
+ * Robot drives to get to the next recording point
  */
 
 #ifndef STATES_INC_STATE_DRIVE_H_
@@ -12,6 +12,8 @@ extern "C"{
 #endif
 
 #include "state_interface.h"
+
+#include <stdbool.h>
 
 class DriveState : public State {
 
@@ -24,6 +26,10 @@ class DriveState : public State {
 		end_status_t run(void) override;
 
 		void cleanup(void) override;
+
+	private:
+		bool line_complete_ = false;
+		bool search_complete_ = false;
 };
 
 #ifdef __cplusplus

@@ -9,7 +9,8 @@ void RecordState::init() {
 }
 
 end_status_t RecordState::run() {
-	return end_status_t::NoChange;
+	// For now, don't actually record, just immediately return that recording is complete
+	return end_status_t::RecordingComplete;
 }
 
 void RecordState::cleanup() {
