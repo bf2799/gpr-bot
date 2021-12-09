@@ -18,6 +18,7 @@ extern "C" {
 #include "encoder.h"
 #include "gps.h"
 #include "imu.h"
+#include "drive_constants.h"
 
 typedef enum {
 	GPS = 0,
@@ -28,15 +29,10 @@ typedef enum {
 } localization_sensor_type_t;
 
 typedef struct vector_3d {
-	double ew;
-	double ns;
-	double ud;
+	double x;
+	double y;
+	double z;
 } vector_3d;
-
-typedef struct quaternion_t {
-	double w;
-	vector_3d vec;
-} quaternion_t;
 
 /**
  * All represented in three dimensions, {east-west, north-south, up-down}
@@ -47,8 +43,8 @@ typedef struct quaternion_t {
 typedef struct localization_estimate_t {
 	vector_3d pos;
 	vector_3d vel;
-	quaternion_t heading;
-	quaternion_t ang_vel;
+	vector_3d heading_zyx;
+	vector_3d ang_vel_zyx;
 } localization_estimate_t;
 
 /**
@@ -68,6 +64,12 @@ void localization_manager_sensor_enable(localization_sensor_type_t sensor_type, 
  * @return Pointer to current localization estimate
  */
 localization_estimate_t* localization_manager_update_estimates();
+
+/**
+ * @brief Returns current localization manager estimate as a 2D "flattened" pose
+ * @return Flattened 2D pose of localization estimate
+ */
+pose2d_t localization_manager_estimate_to_pose2d();
 
 #ifdef __cplusplus
 }

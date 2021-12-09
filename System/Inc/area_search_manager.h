@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #include <stdbool.h>
-#include "trajectory_manager.h"
+#include "drive_constants.h"
 
 /**
  * @brief Generates a rectangular area for the robot to search with a given number of passes and recording stops per pass.

@@ -24,8 +24,6 @@ static encoder_t encoder_r;
 static gps_t gps;
 static imu_t imu;
 static localization_estimate_t cur_estimate;
-static double cur_estimate_uncertainty[sizeof(localization_estimate_t)][sizeof(localization_estimate_t)]; //
-static vector_3d pos_ref; // Reference position, may be 0 or updated by GPS
 
 void localization_manager_init() {
 	// Initialize sensors
@@ -97,7 +95,7 @@ static void localization_manager_read_sensor_data() {
 
 localization_estimate_t* localization_manager_update_estimates() {
 
-	// Predict current state based on last system input and last state
+	// TODO: Predict current state based on last system input and last state
 
 	// Read new sensor data
 	localization_manager_read_sensor_data();
@@ -119,4 +117,9 @@ localization_estimate_t* localization_manager_update_estimates() {
 	}
 
 	return &cur_estimate;
+}
+
+pose2d_t localization_manager_estimate_to_pose2d() {
+	pose2d_t cur_2d_pose = {cur_estimate.pos.x, cur_estimate.pos.y, cur_estimate.heading_zyx.z};
+	return cur_2d_pose;
 }

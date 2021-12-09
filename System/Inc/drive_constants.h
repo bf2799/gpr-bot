@@ -16,4 +16,10 @@
 #define VOLTAGE_STATIC_OFFSET_LEFT		0
 #define VOLTAGE_STATIC_OFFSET_RIGHT		0
 
+typedef struct pose2d_t {
+	double x;
+	double y;
+	double theta;
+} pose2d_t;
+
 #endif /* INC_DRIVE_CONSTANTS_H_ */
