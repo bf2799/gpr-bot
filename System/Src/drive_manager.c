@@ -8,6 +8,7 @@
 
 #include "drive_constants.h"
 #include "motor.h"
+#include "voltage_monitor.h"
 #include "peripheral_assigner.h"
 #include "pid_controller.h"
 
@@ -25,6 +26,8 @@
 
 static motor_t motor_l;
 static motor_t motor_r;
+
+static voltage_monitor_t voltage_monitor;
 
 static pid_controller_t pid_ctrl_vel_wheel_l;
 static pid_controller_t pid_ctrl_vel_wheel_r;
@@ -59,6 +62,7 @@ void drive_manager_init() {
 			MOTOR_RIGHT_TIMER,
 			MOTOR_RIGHT_PWM2_TIMER_CHANNEL
 	);
+	voltage_monitor_init(&voltage_monitor, VOLTAGE_MONITOR_ADC);
 
 	// Initialize PID controllers
 	pid_controller_set_pid(&pid_ctrl_vel_wheel_l, DEFAULT_KP_VEL_WHEEL_L, DEFAULT_KI_VEL_WHEEL_L, DEFAULT_KD_VEL_WHEEL_L);
@@ -94,16 +98,21 @@ static void state_vel_to_wheel_vel(double forward_vel_mps, double turn_vel_radps
  * @brief Turns wheel velocity setpoints into motor percentages
  * @param[in] wheel_vel_l: Wheel velocity setpoint for the left side
  * @param[in] wheel_vel_r: Wheel velocity setpoint for the right side
+ * @param[in] battery_voltage: Current voltage of battery
  * @param[out] motor_percent_l: Feed-forward motor percent for the given left wheel velocity
  * @param[out] motor_percent_r: Feed-foward motor percent for the given right wheel velocity
  */
-static void wheel_vels_to_motor_percents(double wheel_vel_l, double wheel_vel_r, double* motor_percent_l, double* motor_percent_r) {
+static void wheel_vels_to_motor_percents(double wheel_vel_l, double wheel_vel_r, double battery_voltage, double* motor_percent_l, double* motor_percent_r) {
 	// V = sign(v) * (k|v| + V0) (Voltage percent = velocity direction * [voltage_velocity_slope * abs(velocity) + static voltage offset])
-	*motor_percent_l = VOLTAGE_VELOCITY_SLOPE_LEFT * fabs(wheel_vel_l) + VOLTAGE_STATIC_OFFSET_LEFT;
-	*motor_percent_l *= wheel_vel_l > 0 ? 1 : -1;
+	double motor_voltage_l = VOLTAGE_VELOCITY_SLOPE_LEFT * fabs(wheel_vel_l) + VOLTAGE_STATIC_OFFSET_LEFT;
+	motor_voltage_l *= wheel_vel_l > 0 ? 1 : -1;
 
-	*motor_percent_r = VOLTAGE_VELOCITY_SLOPE_RIGHT * fabs(wheel_vel_r) + VOLTAGE_STATIC_OFFSET_RIGHT;
-	*motor_percent_r *= wheel_vel_r > 0 ? 1 : -1;
+	double motor_voltage_r = VOLTAGE_VELOCITY_SLOPE_RIGHT * fabs(wheel_vel_r) + VOLTAGE_STATIC_OFFSET_RIGHT;
+	motor_voltage_r *= wheel_vel_r > 0 ? 1 : -1;
+
+	// Account for battery voltage
+	*motor_percent_l = motor_voltage_l / battery_voltage;
+	*motor_percent_r = motor_voltage_r / battery_voltage;
 }
 
 void drive_manager_change_setpoint(double forward_vel_mps, double turn_vel_radps) {
@@ -134,6 +143,10 @@ void drive_manager_change_setpoint(double forward_vel_mps, double turn_vel_radps
 }
 
 void drive_manager_run(drive_state_estimation_t* state) {
+
+	// Start battery voltage conversion
+	voltage_monitor_start_read(&voltage_monitor);
+
 	// Update heading setpoint to current heading if needed
 	if (use_next_heading_as_target) {
 		setpoint_heading_rad = state->ang_yaw;
@@ -162,10 +175,14 @@ void drive_manager_run(drive_state_estimation_t* state) {
 	wheel_l_vel_mps_setpoint += pid_controller_run(&pid_ctrl_vel_wheel_l, wheel_l_vel_mps_setpoint, wheel_l_vel_mps_pv);
 	wheel_r_vel_mps_setpoint += pid_controller_run(&pid_ctrl_vel_wheel_r, wheel_r_vel_mps_setpoint, wheel_r_vel_mps_pv);
 
+	// Retrieve battery voltage
+	double battery_voltage;
+	voltage_monitor_get_voltage(&voltage_monitor, &battery_voltage);
+
 	// Convert control wheel velocity setpoints to motor percentages
 	double motor_percent_l;
 	double motor_percent_r;
-	wheel_vels_to_motor_percents(wheel_l_vel_mps_setpoint, wheel_r_vel_mps_setpoint, &motor_percent_l, &motor_percent_r);
+	wheel_vels_to_motor_percents(wheel_l_vel_mps_setpoint, wheel_r_vel_mps_setpoint, battery_voltage, &motor_percent_l, &motor_percent_r);
 
 	// Set left and right motor percentages
 	motor_set_percentage(&motor_l, motor_percent_l);

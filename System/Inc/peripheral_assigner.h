@@ -1,5 +1,5 @@
 /*
- * pin_assignment.h
+ * peripheral_assigner.h
  */
 
 #ifndef INC_PERIPHERAL_ASSIGNER_H_
@@ -24,6 +24,7 @@
 #define MOTOR_RIGHT_TIMER					&htim1
 #define MOTOR_RIGHT_PWM1_TIMER_CHANNEL		TIM_CHANNEL_3
 #define MOTOR_RIGHT_PWM2_TIMER_CHANNEL		TIM_CHANNEL_4
+#define VOLTAGE_MONITOR_ADC					&hadc2
 
 #include "adc.h"
 #include "i2c.h"
