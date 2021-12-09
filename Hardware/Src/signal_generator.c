@@ -116,8 +116,8 @@ void signal_generator_init(signal_generator_t* dev, SPI_HandleTypeDef* hspi, GPI
 	dev->freq_pfd_mhz = ref_clk_freq_mhz * ((1 + reg2->RDOUBLER) / reg2->RCOUNT);
 
 	// Write registers
-	for (uint8_t i = 5; i >= 0; i++) {
-		signal_generator_write_register(dev, i);
+	for (int i = 5; i >= 0; i--) {
+		signal_generator_write_register(dev, (uint8_t) i);
 	}
 }
 
