@@ -34,11 +34,7 @@ extern "C" {
 
 #include <stdbool.h>
 
-typedef struct pose2d_t {
-	double x;
-	double y;
-	double theta;
-} pose2d_t;
+#include "drive_constants.h"
 
 /**
  * @brief Calculates a new trajectory for the robot, canceling any previous one

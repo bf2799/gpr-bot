@@ -1,26 +1,38 @@
 /*
- * sensor_manager.c
+ * localization_manager.c
  */
 
-#include "sensor_manager.h"
+#include "localization_manager.h"
 #include "peripheral_assigner.h"
 
+typedef union sensor_data_t {
+	encoder_data_t encoder_data;
+	gps_data_t gps_data;
+	imu_data_t imu_data;
+} localization_sensor_data_t;
 
-static sensor_t sensors[NUM_SENSORS];
+typedef struct sensor_t {
+	bool enabled;
+	bool updated;
+	localization_sensor_data_t last_data;
+} localization_sensor_t;
+
+static localization_sensor_t sensors[NUM_SENSORS];
 
 static encoder_t encoder_l;
 static encoder_t encoder_r;
 static gps_t gps;
 static imu_t imu;
+static localization_estimate_t cur_estimate;
 
-void sensor_manager_init() {
+void localization_manager_init() {
 	// Initialize sensors
 	encoder_init(&encoder_l, ENCODER_LEFT_TIMER);
 	encoder_init(&encoder_r, ENCODER_RIGHT_TIMER);
 	gps_init(&gps, GPS_UART);
 	imu_init(&imu, IMU_I2C);
 
-	// Initialize sensor manager sensor structs
+	// Initialize sensor structs
 	for (int i = 0; i < NUM_SENSORS; i++) {
 		sensors[i].enabled = false;
 		sensors[i].updated = false;
@@ -30,9 +42,10 @@ void sensor_manager_init() {
 	encoder_start(&encoder_l);
 	encoder_start(&encoder_r);
 	gps_start_rx(&gps);
+
 }
 
-void sensor_enable(sensor_type_t sensor_type, bool b_enable) {
+void localization_manager_sensor_enable(localization_sensor_type_t sensor_type, bool b_enable) {
 	// Check user input
 	if (sensor_type < 0 || sensor_type > NUM_SENSORS) {
 		return;
@@ -41,7 +54,12 @@ void sensor_enable(sensor_type_t sensor_type, bool b_enable) {
 	sensors[sensor_type].enabled = b_enable;
 }
 
-void sensor_read_data() {
+/**
+ * @brief Gobble data from all enabled sensors.
+ *
+ * Some sensors may not have data always available even if available
+ */
+static void localization_manager_read_sensor_data() {
 
 	for (int i = 0; i < NUM_SENSORS; i++) {
 		sensors[i].updated = false;
@@ -73,18 +91,35 @@ void sensor_read_data() {
 		sensors[IMU].last_data.imu_data = *imu_get_data(&imu);
 		sensors[IMU].updated = true;
 	}
-
 }
 
-sensor_data_t* sensor_get_data(sensor_type_t sensor_type) {
-	// Check user input
-	if (sensor_type < 0 || sensor_type > NUM_SENSORS) {
-		return NULL;
+localization_estimate_t* localization_manager_update_estimates() {
+
+	// TODO: Predict current state based on last system input and last state
+
+	// Read new sensor data
+	localization_manager_read_sensor_data();
+
+	// Update estimate based on new GPS data
+	if (sensors[GPS].updated) {
+		//sensors[GPS].last_data.gps_data;
 	}
 
-	if (!sensors[sensor_type].updated) {
-		return NULL;
+	// Update estimate based on new encoder data
+	if (sensors[ENCODER_LEFT].updated && sensors[ENCODER_RIGHT].updated) {
+		//sensors[ENCODER_LEFT].last_data.encoder_data;
+		//sensors[ENCODER_RIGHT].last_data.encoder_data;
 	}
 
-	return &(sensors[sensor_type].last_data);
+	// Update estimate based on new IMU data
+	if (sensors[IMU].updated) {
+		//sensors[IMU].last_data.imu_data;
+	}
+
+	return &cur_estimate;
+}
+
+pose2d_t localization_manager_estimate_to_pose2d() {
+	pose2d_t cur_2d_pose = {cur_estimate.pos.x, cur_estimate.pos.y, cur_estimate.heading_zyx.z};
+	return cur_2d_pose;
 }
