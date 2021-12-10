@@ -1,7 +1,7 @@
 # Overview
 This is the robot code for a college Capstone project aiming to put a ground-penetrating radar on a treaded robot. The robot's job is to respond to remote-controlled commands, figure out its location, send radar pulses and record the echoes, and telemeter that information back to a computer for further processing.
 
-This software runs on an STM32F767 microcontroller. Expected attached hardware includes an RC remote receiver, radar receiver, radar signal generator and transmitter, 2 quadrature encoders, IMU, GPS, transmitting radio, 2 motor drivers and motors, and a status LED.
+This software runs on an STM32F767 microcontroller. Expected attached hardware includes an RC remote receiver, radar receiver, radar signal generator and transmitter, 2 quadrature encoders, IMU, GPS, transmitting radio, 2 motor drivers and motors, and a battery voltage monitor.
 
 # Dev Environment Setup
 1. Install STM32CubeIDE (https://www.st.com/en/development-tools/stm32cubeide.html)
@@ -24,19 +24,23 @@ This software runs on an STM32F767 microcontroller. Expected attached hardware i
 - Each state has a specific set of tasks to run once at the beginning, every time through its loop, and once at its end
 - State loops return an "end status" as an indicator to the scheduler of an important event
 
-## UI Manager
-- Gathers raw button values from RC Receiver driver
-- Tracks button states from RC Receiver
-- Converts button states into meaningful commands
+## Area Search Manager
+- Generates rectangular search area with equal spaced recording stops
+- Tracks stops made and returns next stop on request
+
+## Trajectory Manager
+- Calculates valid trajectory between two poses
+- Allows trajectory following by returning velocity setpoints based on current pose
 
 ## Localization Manager
 - Gathers sensor data from encoders, GPS, and IMU if available
 - Tracks estimated robot pose, velocity, and uncertainty in those measurements
-- Updates estimated pose, velocity, and uncertainty with new sensor data using Kalman filtering
+- Updates estimated pose, velocity, and uncertainty with new sensor data using particle filter
+- Particle filter applies third dimension to this work, starting at pg. 95: https://docs.ufpr.br/~danielsantos/ProbabilisticRobotics.pdf
 
 ## GPR Manager
 - Controls timing of signal generation, signal reception, and reference clock for signal receiving mixing
-- Provides method for changing state-specific GPR parameters (pulse frequency, pulse width, and sample length)
+- Provides method for changing state-specific GPR parameters (frequency step profile, pulse width, and sample length)
 
 ## Telemetry Manager
 - Holds definition for telemetered packet protocol, including location, GPR frequency, and recorded GPR data in the body
@@ -46,11 +50,6 @@ This software runs on an STM32F767 microcontroller. Expected attached hardware i
 - Scales user drive setpoints as needed to maintain physically attainable movement
 - Adjusts motor setpoints based on drive setpoints and current pose/velocity
 - Passes motor setpoints to motor controller driver
-
-### LED Manager
-- Holds all possible states of LED, each of which maps to a blink pattern
-- Controls timing of LED blink patterns
-- Sends direct on/off commands to LED driver when applicable
 
 # File Organization
 
@@ -80,4 +79,4 @@ This software runs on an STM32F767 microcontroller. Expected attached hardware i
 
 ## System
 - All custom software that doesn't communicate directly with external hardware
-- Consists of scheduler and all managers
+- Consists of scheduler, states, and all managers
