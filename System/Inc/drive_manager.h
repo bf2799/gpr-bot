@@ -42,6 +42,11 @@ void drive_manager_change_setpoint(double forward_vel_mps, double turn_vel_radps
  */
 void drive_manager_run(drive_state_estimation_t* state);
 
+/**
+ * @brief Controls robot motor speed with button press
+ */
+void drive_manager_run_demo();
+
 #ifdef __cplusplus
 }
 #endif

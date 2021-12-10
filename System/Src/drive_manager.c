@@ -7,6 +7,7 @@
 #include <math.h>
 
 #include "drive_constants.h"
+#include "button.h"
 #include "motor.h"
 #include "voltage_monitor.h"
 #include "peripheral_assigner.h"
@@ -24,10 +25,14 @@
 #define DEFAULT_KI_HEADING		0
 #define DEFAULT_KD_HEADING		0
 
+#define DEMO_MOTOR_PERCENT_INCREASE 0.1
+
 static motor_t motor_l;
 static motor_t motor_r;
 
 static voltage_monitor_t voltage_monitor;
+
+static button_t user_button;
 
 static pid_controller_t pid_ctrl_vel_wheel_l;
 static pid_controller_t pid_ctrl_vel_wheel_r;
@@ -37,6 +42,9 @@ static double setpoint_forward_vel_mps = 0;
 static double setpoint_turn_vel_radps = 0;
 static double setpoint_heading_rad = 0;
 static bool use_next_heading_as_target = false; // Whether next incoming heading should be used to determine the target
+
+static double demo_motor_percent = 0;
+static bool demo_motor_dir_forward = true;
 
 void drive_manager_init() {
 	// Initialize hardware
@@ -63,6 +71,7 @@ void drive_manager_init() {
 			MOTOR_RIGHT_PWM2_TIMER_CHANNEL
 	);
 	voltage_monitor_init(&voltage_monitor, VOLTAGE_MONITOR_ADC);
+	button_init(&user_button, USR_BUTTON_GPIO_Port, USR_BUTTON_Pin);
 
 	// Initialize PID controllers
 	pid_controller_set_pid(&pid_ctrl_vel_wheel_l, DEFAULT_KP_VEL_WHEEL_L, DEFAULT_KI_VEL_WHEEL_L, DEFAULT_KD_VEL_WHEEL_L);
@@ -187,4 +196,15 @@ void drive_manager_run(drive_state_estimation_t* state) {
 	// Set left and right motor percentages
 	motor_set_percentage(&motor_l, motor_percent_l);
 	motor_set_percentage(&motor_r, motor_percent_r);
+}
+
+void drive_manager_run_demo() {
+	if (button_is_pressed(&user_button)) {
+		if (fabs(demo_motor_percent) >= 1 - DEMO_MOTOR_PERCENT_INCREASE / 2) {
+			demo_motor_dir_forward = !demo_motor_dir_forward;
+		}
+		demo_motor_percent += demo_motor_dir_forward ? DEMO_MOTOR_PERCENT_INCREASE : -DEMO_MOTOR_PERCENT_INCREASE;
+		motor_set_percentage(&motor_l, demo_motor_percent);
+		motor_set_percentage(&motor_r, demo_motor_percent);
+	}
 }
