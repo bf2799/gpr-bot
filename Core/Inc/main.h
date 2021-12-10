@@ -58,8 +58,8 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define USER_Btn_Pin GPIO_PIN_13
-#define USER_Btn_GPIO_Port GPIOC
+#define USR_BUTTON_Pin GPIO_PIN_13
+#define USR_BUTTON_GPIO_Port GPIOC
 #define IMU_SDA_Pin GPIO_PIN_0
 #define IMU_SDA_GPIO_Port GPIOF
 #define IMU_SCL_Pin GPIO_PIN_1

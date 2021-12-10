@@ -52,6 +52,9 @@ end_status_t DriveState::run() {
 		return end_status_t::TrajectoryComplete;
 	}
 
+	//////// DEMO ONLY ////////
+	// drive_manager_run_demo();
+
 	return end_status_t::NoChange;
 }
 

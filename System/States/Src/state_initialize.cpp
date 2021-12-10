@@ -19,7 +19,7 @@ void InitializeState::init() {
 
 	// Enable sensors in localization manager
 	localization_manager_sensor_enable(localization_sensor_type_t::ENCODER_LEFT, true);
-	localization_manager_sensor_enable(localization_sensor_type_t::ENCODER_LEFT, true);
+	localization_manager_sensor_enable(localization_sensor_type_t::ENCODER_RIGHT, true);
 	localization_manager_sensor_enable(localization_sensor_type_t::IMU, true);
 
 	// Get current location from localization manager and generate search area
